@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
-const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
-// const CAT_ENDPOINT_IMAGE_URL = `https://cataas.com/cat/says/${firsWord}?size=50&color=red&json=true`;
-const CAT_PREFIX_iMAGE_URL = 'https://cataas.com'
+import React, { useState, useEffect } from "react";
+import { getRamdonFact } from "./services/facts";
+import { useCatIamge } from "./hooks/useCatImage";
+const CAT_PREFIX_iMAGE_URL = "https://cataas.com";
 
 const App = () => {
-  const [fact, setFact] = useState()
-  const [imageUrl, setImageUrl] = useState()
+  const [fact, setFact] = useState();
+  // const [imageUrl, setImageUrl] = useState();
+  const { imageUrl } = useCatIamge({ fact });
 
   // useEffect(() => {
   //   const getRamdomFact = async () => {
@@ -40,54 +41,38 @@ const App = () => {
   // }, [])
 
   //TYPE TWO
-  //Para recupear la cita al cargar la pagina
+  //Para recuperar la cita al cargar la pagina
   useEffect(() => {
-    fetch(CAT_ENDPOINT_RANDOM_FACT)
-      // .then((res) => {
-      //   if (!res.ok) throw new Error('Error fetching fact')
-      //   return res.json()
-      // })
-      .then((res) => res.json())
-      .then((data) => {
-        const { fact } = data
-        setFact(fact)
-      })
-    // .catch((err) => {
-    //   //Tanto si hay una respuesta
-    //   //si hay un error con la peticion
-    // })
-  }, [])
+    // getRamdonFact().then(setFact);
+    getRamdonFact().then((newFact) => setFact(newFact));
+  }, []);
 
   //Para recuperar la iamagen cada vez que tenemos una nueva cita
-  useEffect(() => {
-    if (!fact) return
+  // useEffect(() => {
+  //   if (!fact) return;
+  //   const threeFirstWords = fact.split(" ", 3).join("");
 
-    const threeFirstWords = fact.split(' ', 3).join('')
+  //   fetch(
+  //     `https://cataas.com/cat/says/${threeFirstWords}?size=50&color=red&json=true`
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       const { url } = data;
+  //       setImageUrl(url);
+  //     });
+  // }, [fact]);
 
-    fetch(
-      `https://cataas.com/cat/says/${threeFirstWords}?size=50&color=red&json=true`,
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const { url } = data
-        setImageUrl(url)
-      })
-  }, [fact])
-
-  const handleClick = () => {
-    fetch(CAT_ENDPOINT_RANDOM_FACT)
-      .then((res) => res.json())
-      .then((data) => {
-        const { fact } = data
-        setFact(fact)
-      })
-  }
-
+  const handleClick = async () => {
+    const newFact = await getRamdonFact();
+    setFact(newFact);
+  };
+  
+  console.log(fact);
   return (
     <main>
       <h1>App de gatos</h1>
 
-      <button onClick={() => handleClick()}>Get new fact</button>
+      <button onClick={handleClick}>Get new fact</button>
 
       <h2>{fact}</h2>
       {imageUrl && (
@@ -97,7 +82,7 @@ const App = () => {
         />
       )}
     </main>
-  )
-}
+  );
+};
 
-export default App
+export default App;
