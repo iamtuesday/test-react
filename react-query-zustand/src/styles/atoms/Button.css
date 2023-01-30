@@ -1,0 +1,16 @@
+.btn {
+  cursor: pointer;
+}
+.btn-primary {
+  display: inline-block;
+  background-color: red;
+  color: #fff;
+  border-radius: 0.25rem;
+  padding: 0.5rem 2rem;
+  font-family: "Roboto";
+  transition: background-color, color 0.45s ease-in-out;
+}
+.btn-primary:hover {
+  background-color: #fff;
+  color: #000;
+}

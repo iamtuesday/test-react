@@ -68,9 +68,10 @@ const App = () => {
   };
   
   console.log(fact);
+  const newLocal = <h1>App de gatos</h1>;
   return (
     <main>
-      <h1>App de gatos</h1>
+      {newLocal}
 
       <button onClick={handleClick}>Get new fact</button>
 

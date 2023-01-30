@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-//{imageUrl: "http://image.com"}
+
 export const useCatIamge = ({ fact }) => {
   const [imageUrl, setImageUrl] = useState();
 
@@ -21,3 +21,4 @@ export const useCatIamge = ({ fact }) => {
 
   return {imageUrl};
 };
+//{imageUrl: "http://image.com"}
