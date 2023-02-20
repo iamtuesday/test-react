@@ -5,27 +5,25 @@ import {
   BaseSyntheticEvent,
   Dispatch,
   SetStateAction,
+  useId,
 } from "react";
 import { Product } from "../../interfaces";
-
-interface FilterState {
-  category: string;
-  minPrice: number;
-}
+import { useFilters } from "../../hooks/useFilters";
 
 interface FiltersPros {
   products: Product[];
-  onChangeFilters: Dispatch<SetStateAction<FilterState>>;
 }
 
-export const Filters: FC<FiltersPros> = ({ products, onChangeFilters }) => {
-  const [minPrice, setMinPrice] = useState<number>(0);
+export const Filters: FC<FiltersPros> = ({ products }) => {
   const [categories, setCategories] = useState<Array<string>>();
+  const minPriceFilerId = useId();
+  const categoryFilterId = useId();
+  const {filters,  setFilters } = useFilters();
+
+  console.log(minPriceFilerId, categoryFilterId);
 
   const handleChangeMinPrice = (e: BaseSyntheticEvent) => {
-    //DOS FUENTES DE LA VERDAD
-    setMinPrice(e.target.value);
-    onChangeFilters((prevState) => ({
+    setFilters((prevState) => ({
       ...prevState,
       minPrice: e.target.value,
     }));
@@ -33,7 +31,7 @@ export const Filters: FC<FiltersPros> = ({ products, onChangeFilters }) => {
 
   const handleChangeCategory = (e: BaseSyntheticEvent) => {
     //HUELE MAL
-    onChangeFilters((prevState) => ({
+    setFilters((prevState) => ({
       ...prevState,
       category: e.target.value,
     }));
@@ -71,19 +69,21 @@ export const Filters: FC<FiltersPros> = ({ products, onChangeFilters }) => {
   return (
     <section className="filters">
       <div>
-        <label htmlFor="price">Price</label>
+        <label htmlFor={minPriceFilerId}>Price</label>
         <input
           type="range"
-          id="price"
+          id={minPriceFilerId}
           min="0"
           max="1000"
           onChange={handleChangeMinPrice}
+          value={filters.minPrice}
         />
-        <span>${minPrice}</span>
+        <span>${filters.minPrice}</span>
       </div>
       <div>
-        <label htmlFor="category">Category</label>
-        <select id="category" onChange={handleChangeCategory}>
+        <label htmlFor={categoryFilterId}>Category</label>
+        <select id={categoryFilterId} onChange={handleChangeCategory}>
+          <option value="all">All Products</option>;
           {categories?.map((item, index) => {
             return (
               <option

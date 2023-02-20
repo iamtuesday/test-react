@@ -1,40 +1,24 @@
 import { products as initialProducts } from "./mock/products.json";
-import { ProductList } from "./components/organims";
-import { useState } from "react";
+import { Cart, ProductList } from "./components/organims";
+import { FC, useState } from "react";
 import { Product } from "./interfaces";
 import { Navbar } from "./components/molecules";
-
-interface FilterState {
-  category: string;
-  minPrice: number;
-}
-
-interface ProductsState {
-  products: Product[];
-  filters: FilterState;
-}
+import { useFilters } from "./hooks/useFilters";
+import { Footer } from "./components/ui";
+import { IS_DEVELOPMENT } from "./config/config";
 
 const App = () => {
-  const [products, setProducts] =
-    useState<ProductsState["products"]>(initialProducts);
-  const [filters, setFilters] = useState<ProductsState["filters"]>({
-    category: "all",
-    minPrice: 0,
-  });
+  const [products, setProducts] = useState<Product[]>(initialProducts);
 
-  const filterProducts = (products: Product[]) => {
-    return products.filter((product) => {
-      return (
-        product.price >= filters.minPrice &&
-        (filters.category === "all" || product.category === filters.category)
-      );
-    });
-  };
+  const {  filterProducts, setFilters } = useFilters();
   const filteredProducts = filterProducts(products);
+
   return (
     <>
-      <Navbar products={products} onChangeFilters={setFilters}/>
+      <Navbar products={products}  />
+      <Cart />
       <ProductList products={filteredProducts} />
+      {IS_DEVELOPMENT && <Footer />}
     </>
   );
 };
