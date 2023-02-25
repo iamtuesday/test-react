@@ -1,4 +1,4 @@
-import { ToastContainer, toast, TypeOptions } from "react-toastify";
+import { toast, TypeOptions } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 
 
@@ -11,17 +11,10 @@ export const addNotification = () => {
     });
 };
 
-// export const ToastifyUtilitiesConfigurator = () => {
+export const ToastifyUtilitiesConfigurator = () => {
+    toast("Lorem ipsum dolor sit amet, consectetur adipiscing elit", {
+        type: types[Math.floor(Math.random() * types.length)] as TypeOptions
+    });
+};
 
-//     const addNotification = () => {
-//         // use a random type of notification
-//         toast("Lorem ipsum dolor sit amet, consectetur adipiscing elit", {
-//             type: types[Math.floor(Math.random() * types.length)] as TypeOptions
-//         });
-//     };
 
-// }
-
-export const ToastifyUtilities = () => {
-
-}
